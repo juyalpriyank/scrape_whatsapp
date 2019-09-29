@@ -1,5 +1,8 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 already_scraped = {}
 
@@ -25,25 +28,41 @@ async def start_scrape(scroll=0):
         text = el.find('span', {'title': True})['title']
         if text not in already_scraped.keys():
             driver.find_element_by_xpath(f"//span[text()='{text}']").click()
-            already_scrape.update({text: True})
-            source = driver.page_source
-            soup = BeautifulSoup(source, 'lxml')
-            a = soup.find('div', {"id" : "main"})
-            soup = BeautifulSoup(str(a), 'lxml')
-            b = soup.find('div', {"class" : "copyable-area"})
-            b = list(b)
-            b= b[2]
-            soup = BeautifulSoup(str(b), 'lxml')
-            c = soup.findAll('div',{"class" : "copyable-text"})     #This has all divs for each message which has information if the message is replied to or normal message
-
-            for l in c:
-                print(l.text)
-
-            driver.find_element_by_xpath("//div[contains(@title,'load earlier messages…')]").location_once_scrolled_into_view
-            break
-
+            element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "main")))
+            already_scraped.update({text: True})
+            c = await reload_soup(driver)
+            print(f'ye lo c:- {c}')
+            while await print_to_console(driver, c):
+                print('pass')
+                c = await reload_soup(driver)
+        break
     scroll += 350
     start_scrape(scroll)
+
+async def print_to_console(driver, c):
+    try:
+        driver.find_element_by_xpath("//div[contains(@title,'load earlier messages…')]").location_once_scrolled_into_view
+        element = WebDriverWait(driver, 10).until(EC.title_contains("load earlier messages…"))
+        return True
+
+    except Exception as e:
+        print(e)
+        for l in c:
+            print(l.text)
+        return False
+
+
+async def reload_soup(driver):
+    source = driver.page_source
+    soup = BeautifulSoup(source, 'lxml')
+    a = soup.find('div', {"id" : "main"})
+    soup = BeautifulSoup(str(a), 'lxml')
+    b = soup.find('div', {"class" : "copyable-area"})
+    b = list(b)
+    b= b[2]
+    soup = BeautifulSoup(str(b), 'lxml')
+    c = soup.findAll('div',{"class" : "copyable-text"})     #This has all divs for each message which has information if the message is replied to or normal message
+    return c
 
 """
 code for chat window
