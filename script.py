@@ -31,7 +31,6 @@ async def start_scrape(scroll=0):
             element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "main")))
             already_scraped.update({text: True})
             c = await reload_soup(driver)
-            print(f'ye lo c:- {c}')
             while await print_to_console(driver, c):
                 print('pass')
                 c = await reload_soup(driver)
@@ -41,11 +40,12 @@ async def start_scrape(scroll=0):
 
 async def print_to_console(driver, c):
     try:
+        element = WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.XPATH, "//div[contains(@title,'load earlier messages…')]")))
         driver.find_element_by_xpath("//div[contains(@title,'load earlier messages…')]").location_once_scrolled_into_view
-        element = WebDriverWait(driver, 10).until(EC.title_contains("load earlier messages…"))
         return True
 
     except Exception as e:
+        c = await reload_soup(driver)
         print(e)
         for l in c:
             print(l.text)
