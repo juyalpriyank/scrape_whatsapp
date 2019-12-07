@@ -1,12 +1,12 @@
 # WhatsApp-Scraping
 Python script to scrape all the chats from WhatsApp Web.
 
-#Description
+# Description
 Asynchronous WhatsApp Scraper written in Python. I have tried to keep this script independent of the changing classnames of WhatsApp web. Simply prints the text from each chat to the console. 
 
 # Requirements 
 Script uses Python3.5+.
-All the libraries that we are going to use are in the [requirements.txt](requirements.txt) file.
+All the libraries that we are going to use are in the [requirement.txt](requirement.txt) file.
 You can install it with PIP in the terminal with:
 ```
 pip install -r requirements.txt
@@ -19,15 +19,15 @@ Selenium requires a driver to interface with the chosen browser. This script use
 
 >For more information you can go to the [Selenium Website](http://selenium-python.readthedocs.io/installation.html) at the installation section.
 
-#Limitations
+# Limitations
 *  Doesn't prints the link of the pictures/videos.
 *  Doesn't scrape the archived chats.
 *  Marked replies to texts are not seperated as of now.
 
 # Settings
-**AT THIS MOMENT THE PROJECT ONLY WORKS WITH CHROME**
-**THE SCRIPT IS RUN USING AN IDE LIKE IPYTHON**
-**BELOW ARE THE STEP-BY-STEP GUIDANCE FOR THE SAME**
+**AT THIS MOMENT THE PROJECT ONLY WORKS WITH CHROME**.<br>
+**THE SCRIPT IS RUN USING AN IDE LIKE IPYTHON**.<br>
+**BELOW ARE THE STEP-BY-STEP GUIDANCE FOR THE SAME**.
 
 
 # Step-1:
