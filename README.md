@@ -32,6 +32,7 @@ Selenium requires a driver to interface with the chosen browser. This script use
 
 # Step-1:
 *  Clone the repo
+*  Change the ["--driver_path"](https://github.com/juyalpriyank/scrape_whatsapp/blob/a57bae9299c1e355159e835ceefa5d5b1b988c97/script.py#L13) to absolute path of your chrome driver.
 *  Open IPython and import the script.py(using the below command) which will launch the browser and redirect you to whatsapp web.
 ``` 
 import script
