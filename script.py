@@ -10,7 +10,7 @@ already_scraped = {}            #A hash to keep track of all the chats that have
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 #options.add_argument('--incognito')
-driver = webdriver.Chrome("--driver_path", options=options)         #Give the path of your chrome driver
+driver = webdriver.Chrome("--driver_path", options=options)        #Give the path of your chrome driver
 driver.get('https://web.whatsapp.com')
 
 async def start_scrape(scroll=0):
@@ -18,9 +18,9 @@ async def start_scrape(scroll=0):
     target = driver.find_element_by_id('pane-side')
     driver.execute_script(f"arguments[0].scrollTop = {scroll}", target)
     source = driver.page_source
-    soup = BeautifulSoup(source, 'lxml')
+    soup = BeautifulSoup(source, 'html.parser')
     left_panel = soup.findAll("div", {"id": "pane-side"})[0] #This will fetch all the left side panel's code
-    left_panel_soup = BeautifulSoup(str(left_panel), 'lxml')
+    left_panel_soup = BeautifulSoup(str(left_panel), 'html.parser')
     chat_div_list = left_panel_soup.findAll('div', {'tabindex' : '-1'})[1:] #This _list will contain all the chats div , 0th index is ignored([1:]) because it will be parent div with all the children div in it
     for chat_div in chat_div_list:
         chat_name = chat_div.find('span', {'title': True})['title']
@@ -52,12 +52,12 @@ async def print_to_console(driver, c):
 
 async def reload_soup(driver):
     source = driver.page_source
-    soup = BeautifulSoup(source, 'lxml')
+    soup = BeautifulSoup(source, 'html.parser')
     all_soup = soup.find('div', {"id" : "main"})
-    soup = BeautifulSoup(str(all_soup), 'lxml')
+    soup = BeautifulSoup(str(all_soup), 'html.parser')
     filtered_soup = soup.find('div', {"class" : "copyable-area"})
     filtered_soup = list(filtered_soup)[2]
-    soup = BeautifulSoup(str(filtered_soup), 'lxml')
+    soup = BeautifulSoup(str(filtered_soup), 'html.parser')
     final_soup = soup.findAll('div',{"class" : "copyable-text"})     #This has all divs for each message which has information if the message is replied to or normal message
     return final_soup
 
